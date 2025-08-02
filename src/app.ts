@@ -12,7 +12,7 @@ app.use(morgan('common'));
 app.use(express.json());
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
