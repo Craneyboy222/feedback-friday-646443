@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import axios, { AxiosError } from 'axios';
-import FeedbackThread from '../components/FeedbackThread';
-import SearchFilter from '../components/SearchFilter';
+import { FeedbackThread } from '../components/FeedbackThread';
+import { SearchFilter } from '../components/SearchFilter';
 
-interface FeedbackThreadData {
+export interface FeedbackThreadData {
   id: string;
   title: string;
   content: string;
   // Add other properties as needed
+}
+
+interface ErrorResponse {
+  message?: string;
 }
 
 const HomePage: React.FC = () => {
@@ -30,18 +34,10 @@ const HomePage: React.FC = () => {
           setThreads(response.data);
         }
       } catch (err) {
-        const axiosError = err as AxiosError;
+        const axiosError = err as AxiosError<ErrorResponse>;
         if (axiosError.response) {
           console.error("Error fetching feedback threads:", axiosError.response.data);
-          if (
-            axiosError.response.data &&
-            typeof axiosError.response.data === 'object' &&
-            'message' in axiosError.response.data
-          ) {
-            setError(`Failed to load feedback threads: ${(axiosError.response.data as { message: string }).message || "Unknown error"}`);
-          } else {
-            setError("Failed to load feedback threads. Please try again later.");
-          }
+          setError(`Failed to load feedback threads: ${axiosError.response.data?.message || "Unknown error"}`);
         } else {
           console.error("Error fetching feedback threads:", axiosError.message);
           setError("Failed to load feedback threads. Please try again later.");
@@ -49,7 +45,6 @@ const HomePage: React.FC = () => {
 
         if (retryCount < 3 && isMounted) {
           setRetryCount(prev => prev + 1);
-          fetchThreads(); // Retry mechanism
         }
       } finally {
         if (isMounted) {

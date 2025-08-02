@@ -1,20 +1,14 @@
-import React from 'react';
+import { FeedbackThreadData } from '../pages/index';
 
 interface FeedbackThreadProps {
-  thread: {
-    id: string;
-    title: string;
-    content: string;
-  };
+  thread: FeedbackThreadData;
 }
 
-const FeedbackThread: React.FC<FeedbackThreadProps> = ({ thread }) => {
+export const FeedbackThread: React.FC<FeedbackThreadProps> = ({ thread }) => {
   return (
-    <div className="feedback-thread">
+    <div>
       <h2>{thread.title}</h2>
       <p>{thread.content}</p>
     </div>
   );
 };
-
-export default FeedbackThread;
