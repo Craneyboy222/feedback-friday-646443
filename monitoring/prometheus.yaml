@@ -1,0 +1,36 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  replicas: 2
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      team: frontend
+  resources:
+    requests:
+      memory: 400Mi
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: enterprise-app-monitor
+  labels:
+    team: frontend
+spec:
+  selector:
+    matchLabels:
+      app: enterprise-app
+  endpoints:
+  - port: web
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-config
+  labels:
+    grafana_dashboard: "1"
+data:
+  enterprise-dashboard.json: |
+    { "dashboard": {} }

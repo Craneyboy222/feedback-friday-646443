@@ -1,0 +1,149 @@
+openapi: 3.0.0
+info:
+  title: Feedback Platform API
+  version: 1.0.0
+paths:
+  /api/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Created
+  /api/login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /api/feedback-threads:
+    get:
+      summary: Retrieve all feedback threads
+      responses:
+        '200':
+          description: A list of feedback threads
+    post:
+      summary: Create a new feedback thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: string
+                url:
+                  type: string
+                purpose:
+                  type: string
+                technologies:
+                  type: string
+                feedback_requested:
+                  type: boolean
+                seeking_beta_testers:
+                  type: boolean
+                additional_comments:
+                  type: string
+      responses:
+        '201':
+          description: Created
+  /api/feedback-threads/{id}:
+    get:
+      summary: Retrieve specific feedback thread
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A feedback thread
+  /api/feedback-responses:
+    post:
+      summary: Submit feedback response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                thread_id:
+                  type: integer
+                response_text:
+                  type: string
+      responses:
+        '201':
+          description: Created
+  /api/surveys/{thread_id}:
+    get:
+      summary: Retrieve surveys for a thread
+      parameters:
+        - name: thread_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of surveys
+  /api/promo-codes:
+    post:
+      summary: Submit promo code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                thread_id:
+                  type: integer
+                code:
+                  type: string
+      responses:
+        '201':
+          description: Created
+  /api/notifications:
+    get:
+      summary: Retrieve user notifications
+      responses:
+        '200':
+          description: A list of notifications
+  /api/notifications/{id}:
+    put:
+      summary: Mark notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Updated

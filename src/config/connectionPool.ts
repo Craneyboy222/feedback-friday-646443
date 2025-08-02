@@ -1,0 +1,6 @@
+export const CONNECTION_POOL_CONFIG = {
+  max: 20, // Maximum number of connections in the pool
+  min: 5,  // Minimum number of connections in the pool
+  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+  connectionTimeoutMillis: 2000 // Return an error after 2 seconds if connection could not be established
+};

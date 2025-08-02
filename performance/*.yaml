@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  web:
+    image: myapp/web:latest
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    ports:
+      - '80:80'
+    networks:
+      - webnet
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://user:password@db:5432/mydb
+
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    networks:
+      - webnet
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: overlay
+
+# CDN configuration and static asset caching
+cdn:
+  provider: aws
+  s3:
+    bucket: myapp-static-assets
+    region: us-east-1
+  cloudfront:
+    distribution_id: E1234567890
+
+# Performance monitoring
+monitoring:
+  newrelic:
+    license_key: YOUR_NEW_RELIC_LICENSE_KEY
+
+# Load balancing and auto-scaling
+load_balancer:
+  provider: aws
+  ec2:
+    instance_type: t2.micro
+    auto_scaling:
+      min_instances: 2
+      max_instances: 10
+      metrics:
+        - type: cpu
+          threshold: 70%
+          cooldown: 300
+
+# Performance testing and benchmarking
+performance_testing:
+  tool: k6
+  script: load_test.js
+  options:
+    vus: 50
+    duration: 1m

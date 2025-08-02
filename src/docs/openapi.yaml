@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+  title: Enterprise Application API
+  version: 1.0.0
+  description: API documentation for the enterprise application
+servers:
+  - url: https://api.yourapplication.com/v1
+paths:
+  /api/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Invalid input
+  /api/login:
+    post:
+      summary: Authenticate a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User authenticated successfully
+        '401':
+          description: Authentication failed
+  /api/feedback-threads:
+    get:
+      summary: Retrieve all feedback threads
+      responses:
+        '200':
+          description: List of feedback threads
+    post:
+      summary: Create a new feedback thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: string
+                url:
+                  type: string
+                purpose:
+                  type: string
+                technologies:
+                  type: string
+                feedback_requested:
+                  type: string
+              required:
+                - company_name
+                - url
+                - purpose
+      responses:
+        '201':
+          description: Feedback thread created successfully
+        '400':
+          description: Invalid input
+  /api/feedback-threads/{id}:
+    get:
+      summary: Retrieve a specific feedback thread
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Thread ID
+      responses:
+        '200':
+          description: Feedback thread details
+        '404':
+          description: Thread not found
+  /api/feedback-responses:
+    post:
+      summary: Submit a feedback response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                thread_id:
+                  type: string
+                response_text:
+                  type: string
+              required:
+                - thread_id
+                - response_text
+      responses:
+        '201':
+          description: Feedback response submitted successfully
+        '400':
+          description: Invalid input
+  /api/surveys/{thread_id}:
+    get:
+      summary: Retrieve surveys for a thread
+      parameters:
+        - in: path
+          name: thread_id
+          schema:
+            type: string
+          required: true
+          description: Thread ID
+      responses:
+        '200':
+          description: List of surveys for the thread
+        '404':
+          description: Thread not found
+  /api/promo-codes:
+    post:
+      summary: Submit a promo code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                thread_id:
+                  type: string
+                code:
+                  type: string
+              required:
+                - thread_id
+                - code
+      responses:
+        '201':
+          description: Promo code submitted successfully
+        '400':
+          description: Invalid input
+  /api/notifications:
+    get:
+      summary: Retrieve user notifications
+      responses:
+        '200':
+          description: List of notifications
+    put:
+      summary: Mark notification as read
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Notification ID
+      responses:
+        '200':
+          description: Notification marked as read
+        '404':
+          description: Notification not found

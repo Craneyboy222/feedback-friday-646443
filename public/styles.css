@@ -1,0 +1,50 @@
+/* Stylesheet */
+
+/* Tailwind CSS included with custom styles for enterprise application */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.header {
+    background-color: #0056b3;
+    color: white;
+    padding: 15px;
+}
+
+.footer {
+    background-color: #eaeaea;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
